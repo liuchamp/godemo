@@ -11,7 +11,7 @@ func main() {
 }
 func ExampleNewClient() {
 	client := redis.NewClient(&redis.Options{
-		Addr:     "localhost:6379",
+		Addr:     "192.168.0.193:7001",
 		Password: "", // no password set
 		DB:       0,  // use default DB
 	})
@@ -23,16 +23,16 @@ func ExampleNewClient() {
 
 func ExampleClient() {
 	client := redis.NewClient(&redis.Options{
-		Addr:     "localhost:6379",
+		Addr:     "92.168.0.193:7001",
 		Password: "", // no password set
 		DB:       0,  // use default DB
 	})
-	err := client.Set("key", "value", 0).Err()
+	err := client.Set("okmg", "signd", 0).Err()
 	if err != nil {
 		panic(err)
 	}
 
-	val, err := client.Get("key").Result()
+	val, err := client.Get("okmg").Result()
 	if err != nil {
 		panic(err)
 	}
