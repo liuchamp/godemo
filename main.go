@@ -11,11 +11,11 @@ func main() {
 }
 func ExampleNewClient() {
 	client := redis.NewClient(&redis.Options{
-		Addr:     "192.168.0.193:7001",
-		Password: "", // no password set
-		DB:       0,  // use default DB
+		Addr: "192.168.0.193:7001",
+		// Password: "", // no password set
+		DB: 0, // use default DB
 	})
-
+	defer client.Close()
 	pong, err := client.Ping().Result()
 	fmt.Println(pong, err)
 	// Output: PONG <nil>
@@ -23,10 +23,11 @@ func ExampleNewClient() {
 
 func ExampleClient() {
 	client := redis.NewClient(&redis.Options{
-		Addr:     "92.168.0.193:7001",
-		Password: "", // no password set
-		DB:       0,  // use default DB
+		Addr: "92.168.0.193:7001",
+		// Password: "", // no password set
+		DB: 0, // use default DB
 	})
+	defer client.Close()
 	err := client.Set("okmg", "signd", 0).Err()
 	if err != nil {
 		panic(err)
