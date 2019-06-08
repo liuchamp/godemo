@@ -6,8 +6,8 @@ import (
 )
 
 func main() {
-	ExampleClient()
 	ExampleNewClient()
+	ExampleClient()
 }
 func ExampleNewClient() {
 	client := redis.NewClient(&redis.Options{
