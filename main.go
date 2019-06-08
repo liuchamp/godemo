@@ -6,18 +6,46 @@ import (
 )
 
 func main() {
-	redisdb := redis.NewClusterClient(&redis.ClusterOptions{
-		Addrs: []string{
-			"192.168.0.193:7001",
-			"192.168.0.193:7002",
-			"192.168.0.193:7003",
-			"192.168.0.193:7004",
-			"192.168.0.193:7005",
-			"192.168.0.193:7006"},
+	ExampleClient()
+	ExampleNewClient()
+}
+func ExampleNewClient() {
+	client := redis.NewClient(&redis.Options{
+		Addr:     "localhost:6379",
+		Password: "", // no password set
+		DB:       0,  // use default DB
 	})
-	redisdb.Ping()
-	err := redisdb.ReloadState()
+
+	pong, err := client.Ping().Result()
+	fmt.Println(pong, err)
+	// Output: PONG <nil>
+}
+
+func ExampleClient() {
+	client := redis.NewClient(&redis.Options{
+		Addr:     "localhost:6379",
+		Password: "", // no password set
+		DB:       0,  // use default DB
+	})
+	err := client.Set("key", "value", 0).Err()
 	if err != nil {
-		fmt.Println(err)
+		panic(err)
 	}
+
+	val, err := client.Get("key").Result()
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println("key", val)
+
+	val2, err := client.Get("key2").Result()
+	if err == redis.Nil {
+		fmt.Println("key2 does not exist")
+	} else if err != nil {
+		panic(err)
+	} else {
+		fmt.Println("key2", val2)
+	}
+	// Output: key value
+	// key2 does not exist
 }
