@@ -2,22 +2,23 @@ package main
 
 import (
 	"fmt"
-	"github.com/go-redis/redis"
+	"strings"
 )
 
 func main() {
-	redisdb := redis.NewClusterClient(&redis.ClusterOptions{
-		Addrs: []string{
-			"192.168.0.193:7001",
-			"192.168.0.193:7002",
-			"192.168.0.193:7003",
-			"192.168.0.193:7004",
-			"192.168.0.193:7005",
-			"192.168.0.193:7006"},
-	})
-	redisdb.Ping()
-	err := redisdb.ReloadState()
-	if err != nil {
-		fmt.Println(err)
-	}
+	test2()
+}
+
+func test1() {
+	s := "1231"
+	strings.Join([]string{s, "ewrwer"}, ",")
+	fmt.Println(s)
+}
+
+func test2() {
+	var s []string
+	s = append(s, "123123")
+	s = append(s, "sjadingisdajf")
+	sm := strings.Join(s, ",")
+	fmt.Println(sm)
 }
