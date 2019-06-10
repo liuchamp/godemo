@@ -37,4 +37,9 @@ func main() {
 	if m, ess := redisdb.Do("get", "name").String(); ess == nil {
 		fmt.Println(m)
 	}
+	if m, esss := redisdb.Do("get", "key_does_not_exist1").String(); esss == nil {
+		fmt.Println(m)
+	} else {
+		fmt.Println("error", esss)
+	}
 }
