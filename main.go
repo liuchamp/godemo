@@ -18,6 +18,23 @@ func main() {
 	redisdb.Ping()
 	err := redisdb.ReloadState()
 	if err != nil {
-		fmt.Println(err)
+		panic(err)
+	}
+	defer redisdb.Close()
+	v, e := redisdb.Do("get", "key_does_not_exist").String()
+	if e != nil {
+		fmt.Println(e)
+	} else {
+		fmt.Println(v)
+	}
+	v, es := redisdb.Do("set", "name", "yexingyun").String()
+
+	if es != nil {
+		fmt.Println(e)
+	} else {
+		fmt.Println(v)
+	}
+	if m, ess := redisdb.Do("get", "name").String(); ess == nil {
+		fmt.Println(m)
 	}
 }
