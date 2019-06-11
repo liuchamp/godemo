@@ -22,8 +22,16 @@ func main() {
 	}
 	defer redisdb.Close()
 	//	redisdb.ForEachMaster(callback)
-	sopt(redisdb)
+	getdemo(redisdb, "smdu")
 
+}
+func getdemo(redisdb *redis.ClusterClient, code string) {
+	v, e := redisdb.Do("get", "key_does_not_exist").String()
+	if e != nil {
+		fmt.Println(e)
+	} else {
+		fmt.Println(v)
+	}
 }
 func callback(master *redis.Client) error {
 	// 扫描有哪些key值
