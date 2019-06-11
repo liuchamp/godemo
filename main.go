@@ -21,7 +21,8 @@ func main() {
 		panic(err)
 	}
 	defer redisdb.Close()
-	redisdb.ForEachMaster(callback)
+	//	redisdb.ForEachMaster(callback)
+	sopt(redisdb)
 
 }
 func callback(master *redis.Client) error {
@@ -30,6 +31,7 @@ func callback(master *redis.Client) error {
 	for it.Next() {
 		fmt.Println(it.Val())
 	}
+
 	return nil
 }
 func sopt(redisdb *redis.ClusterClient) {
@@ -39,7 +41,7 @@ func sopt(redisdb *redis.ClusterClient) {
 	} else {
 		fmt.Println(v)
 	}
-	v, es := redisdb.Do("set", "name", "yexingyun").String()
+	v, es := redisdb.Do("set", "name", "umls").String()
 
 	if es != nil {
 		fmt.Println(e)
