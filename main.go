@@ -1,11 +1,36 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"runtime"
+	"sync"
+)
+
+var couter int = 0
+
+func Count(lock *sync.Mutex) {
+	lock.Lock()
+	couter++
+	fmt.Println("counter = ", couter)
+	lock.Unlock()
+}
 
 func main() {
+	lock := &sync.Mutex{}
 
 	for i := 0; i < 10; i++ {
-		go add(i, i+1)
+		go Count(lock)
+
+	}
+
+	for {
+		lock.Lock()
+		c := couter
+		lock.Unlock()
+		runtime.Gosched()
+		if c >= 10 {
+			break
+		}
 	}
 }
 
