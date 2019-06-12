@@ -7,6 +7,11 @@ func main() {
 	//
 	son.B()
 	son.A()
+	x := X{"sdaingsdia"}
+	y := Y{}
+	y.X = x
+	fmt.Println(x.Name)
+	fmt.Println(y.Name)
 }
 
 type Base struct {
