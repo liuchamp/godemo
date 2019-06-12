@@ -1,23 +1,32 @@
 package main
 
-import (
-	"fmt"
-	"github.com/go-redis/redis"
-)
+import "fmt"
 
 func main() {
-	redisdb := redis.NewClusterClient(&redis.ClusterOptions{
-		Addrs: []string{
-			"192.168.0.193:7001",
-			"192.168.0.193:7002",
-			"192.168.0.193:7003",
-			"192.168.0.193:7004",
-			"192.168.0.193:7005",
-			"192.168.0.193:7006"},
-	})
-	redisdb.Ping()
-	err := redisdb.ReloadState()
-	if err != nil {
-		fmt.Println(err)
-	}
+	son := Son{Base{"Start"}}
+	//
+	son.B()
+	son.A()
+}
+
+type Base struct {
+	Name string
+}
+
+func (b *Base) A() {
+	fmt.Println("Base method A called ......")
+}
+func (b *Base) B() {
+	fmt.Println("Base method B called ......")
+}
+
+type Son struct {
+	Base
+}
+
+// 方法重写
+func (son *Son) B() {
+	// 调用父类，相当于super
+	son.Base.B()
+	fmt.Println("Son method B called ......")
 }
