@@ -11,17 +11,13 @@ func Count(cha chan int) {
 
 func main() {
 
-	chs := make([]chan int, 10)
+	ch := make(chan int)
 	for i := 0; i < 10; i++ {
-		chs[i] = make(chan int)
-		go Count(chs[i])
-	}
-
-	var cout int
-	for _, ch := range chs {
-
-		cout += <-ch
-		fmt.Println(cout)
+		select {
+		case ch <- i:
+		case x := <-ch:
+			fmt.Println(x)
+		}
 	}
 }
 
