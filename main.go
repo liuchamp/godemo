@@ -4,11 +4,6 @@ import (
 	"fmt"
 )
 
-func Count(cha chan int) {
-	cha <- 1
-	fmt.Println("Counting")
-}
-
 func main() {
 
 	ch := make(chan int)
@@ -19,9 +14,4 @@ func main() {
 			fmt.Println(x)
 		}
 	}
-}
-
-func add(x, y int) {
-	z := x + y
-	fmt.Println(z)
 }
