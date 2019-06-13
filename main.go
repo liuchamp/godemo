@@ -3,15 +3,13 @@ package main
 import "fmt"
 
 func main() {
+	testRepeatName()
+}
+func testsingleInherit() {
 	son := Son{Base{"Start"}}
 	//
 	son.B()
 	son.A()
-	x := X{"sdaingsdia"}
-	y := Y{}
-	y.X = x
-	fmt.Println(x.Name)
-	fmt.Println(y.Name)
 }
 
 type Base struct {
@@ -34,4 +32,30 @@ func (son *Son) B() {
 	// 调用父类，相当于super
 	son.Base.B()
 	fmt.Println("Son method B called ......")
+}
+
+// 名称冲突问题
+type Se struct {
+	Name string
+}
+
+func (s *Se) GetName() {
+	fmt.Println("Se.Name=", s.Name)
+}
+
+type See struct {
+	Se
+	Name string
+}
+
+func (s *See) GetName() {
+	fmt.Println("See.Name=", s.Name)
+}
+
+func testRepeatName() {
+	s := Se{"siagnsd"}
+	ss := See{s, "dsagdsina"}
+
+	s.GetName()
+	ss.GetName()
 }
