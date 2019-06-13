@@ -6,7 +6,7 @@ import (
 )
 
 func main() {
-	anonymoustest()
+	an2func()
 }
 
 func chanstest1() {
@@ -58,4 +58,14 @@ func anonymoustest() {
 	func(data int) {
 		fmt.Println("hello", data)
 	}(100)
+}
+
+func an2func() {
+	// 将匿名函数体保存到f()中
+	f := func(data int) {
+		fmt.Println("hello", data)
+	}
+	// 使用f()调用
+	fmt.Printf("%T sn\n", f)
+	f(100)
 }
