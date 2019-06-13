@@ -6,7 +6,7 @@ import (
 )
 
 func main() {
-	chanstest1()
+	anonymoustest()
 }
 
 func chanstest1() {
@@ -52,4 +52,10 @@ func StringProccess(list []string, chain []func(string) string) {
 // 自定义的移除前缀的处理函数
 func removePrefix(str string) string {
 	return strings.TrimPrefix(str, "go")
+}
+
+func anonymoustest() {
+	func(data int) {
+		fmt.Println("hello", data)
+	}(100)
 }
