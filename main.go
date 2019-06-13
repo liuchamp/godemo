@@ -29,7 +29,7 @@ func Changes() {
 	// 准备两个变量, 赋值1和2
 	x, y := 1, 2
 	// 交换变量值
-	swap2(&x, &y)
+	swap3(&x, &y)
 	// 输出变量值
 	fmt.Println(x, y)
 }
@@ -46,4 +46,17 @@ func swap(a, b *int) {
 
 func swap2(a, b *int) {
 	b, a = a, b
+}
+func swap3(a, b *int) {
+	fmt.Println(a)
+	fmt.Println(b)
+
+	t := a
+	a = b
+	b = t
+
+	fmt.Println(a)
+	fmt.Println(b)
+	fmt.Println(t)
+
 }
