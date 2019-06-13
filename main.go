@@ -1,9 +1,11 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+)
 
 func main() {
-	testRepeatName()
+	impTest()
 }
 func testsingleInherit() {
 	son := Son{Base{"Start"}}
@@ -58,4 +60,29 @@ func testRepeatName() {
 
 	s.GetName()
 	ss.GetName()
+}
+
+type Student struct {
+	Name string
+}
+type Action interface {
+	sport()
+	draw()
+}
+
+func (s Student) sport() {
+
+}
+
+func (s Student) draw() {
+
+}
+
+func impTest() {
+	var a Action
+	fmt.Println("a=", a)
+
+	var s Student
+	a = s
+	fmt.Println(a)
 }
