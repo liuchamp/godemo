@@ -1,12 +1,13 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"strings"
 )
 
 func main() {
-	an2func()
+	an2op()
 }
 
 func chanstest1() {
@@ -68,4 +69,26 @@ func an2func() {
 	// 使用f()调用
 	fmt.Printf("%T sn\n", f)
 	f(100)
+}
+
+var skillParam = flag.String("skill", "", "skill to perform")
+
+func an2op() {
+	flag.Parse()
+	var skill = map[string]func(){
+		"fire": func() {
+			fmt.Println("chicken fire")
+		},
+		"run": func() {
+			fmt.Println("soldier run")
+		},
+		"fly": func() {
+			fmt.Println("angel fly")
+		},
+	}
+	if f, ok := skill[*skillParam]; ok {
+		f()
+	} else {
+		fmt.Println("skill not found")
+	}
 }
