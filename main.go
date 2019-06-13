@@ -97,7 +97,14 @@ func impTest() {
 }
 
 func impTest2() {
-	s := Student{"a"}
+	s := Student{"489899"}
 	p := Player{s}
 	p.sport()
+	var a Action
+	a = p
+	fmt.Println(a)
+	a.sport()
+	a = s
+	fmt.Println(a)
+	a.sport()
 }
