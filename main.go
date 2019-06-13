@@ -6,7 +6,7 @@ import (
 
 func main() {
 
-	impTest()
+	impTest2()
 }
 func testsingleInherit() {
 	son := Son{Base{"Start"}}
@@ -66,13 +66,21 @@ func testRepeatName() {
 type Student struct {
 	Name string
 }
+
+type Player struct {
+	Student
+}
+
 type Action interface {
 	sport()
 	draw()
 }
 
 func (s Student) sport() {
-
+	fmt.Println("sport")
+}
+func (p Player) sport() {
+	fmt.Println("player sport")
 }
 
 func (s Student) draw() {
@@ -86,4 +94,10 @@ func impTest() {
 	var s Student
 	a = s
 	fmt.Println(a)
+}
+
+func impTest2() {
+	s := Student{"a"}
+	p := Player{s}
+	p.sport()
 }
