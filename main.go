@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	an2op()
+	clousuretest()
 }
 
 func chanstest1() {
@@ -103,5 +103,7 @@ func clousuretest() {
 		str = "hello dude"
 	}
 	// 调用匿名函数
+	fmt.Println(str)
 	foo()
+	fmt.Println(str)
 }
