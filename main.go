@@ -5,6 +5,7 @@ import (
 )
 
 func main() {
+
 	impTest()
 }
 func testsingleInherit() {
