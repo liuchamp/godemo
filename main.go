@@ -2,11 +2,12 @@ package main
 
 import (
 	"fmt"
+	"github.com/liuchamp/godemo/outtime"
 	"time"
 )
 
 func main() {
-	smread()
+	outtime.Outtimetest()
 }
 func smread() {
 	queue := make(chan int, 10)
