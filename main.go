@@ -3,10 +3,11 @@ package main
 import (
 	"fmt"
 	"math/rand"
+	"time"
 )
 
 func main() {
-	randtest()
+	randtest2()
 }
 
 func randtest() {
@@ -39,4 +40,23 @@ func randtest() {
 	fmt.Print(r2.Intn(100), ",")
 	fmt.Print(r2.Intn(100))
 	fmt.Println()
+}
+
+// 如果想获取比较真的随机数， 可以将随机seed 换成如UnixNano
+
+func randtest2() {
+	fmt.Println(getRandInt(56))
+}
+
+func getRandInt(rn int) int {
+	s := rand.NewSource(time.Now().UnixNano())
+	r := rand.New(s)
+
+	if rn <= 0 {
+		n := r.Intn(100)
+		return n
+	} else {
+		return r.Intn(rn)
+	}
+
 }
