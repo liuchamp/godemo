@@ -2,23 +2,53 @@ package main
 
 import (
 	"fmt"
-	"strings"
+	s "strings"
 )
 
 func main() {
-	test2()
+	sum()
 }
 
 func test1() {
-	s := "1231"
-	strings.Join([]string{s, "ewrwer"}, ",")
-	fmt.Println(s)
+	s12 := "1231"
+	s.Join([]string{s12, "ewrwer"}, ",")
+	fmt.Println(s12)
 }
 
 func test2() {
-	var s []string
-	s = append(s, "123123")
-	s = append(s, "sjadingisdajf")
-	sm := strings.Join(s, ",")
+	var ss []string
+	ss = append(ss, "123123")
+	ss = append(ss, "sjadingisdajf")
+	sm := s.Join(ss, ",")
 	fmt.Println(sm)
+}
+
+// 这里给fmt.Println起个别名，因为下面我们会多处使用。
+var p = fmt.Println
+
+func sum() {
+	// 下面是strings包里面提供的一些函数实例。注意这里的函数并不是
+	// string对象所拥有的方法，这就是说使用这些字符串操作函数的时候
+	// 你必须将字符串对象作为第一个参数传递进去。
+	p("Contains:  ", s.Contains("test", "es"))
+	p("Count:     ", s.Count("test", "t"))
+	p("HasPrefix: ", s.HasPrefix("test", "te"))
+	p("HasSuffix: ", s.HasSuffix("test", "st"))
+	p("Index:     ", s.Index("test", "e"))
+	p("Join:      ", s.Join([]string{"a", "b"}, "-"))
+	p("Repeat:    ", s.Repeat("a", 5))
+	p("Replace:   ", s.Replace("foo", "o", "0", -1))
+	p("Replace:   ", s.Replace("foo", "o", "0", 1))
+	p("Split:     ", s.Split("a-b-c-d-e", "-"))
+	p("ToLower:   ", s.ToLower("TEST"))
+	p("ToUpper:   ", s.ToUpper("test"))
+	p()
+
+	// 你可以在strings包里面找到更多的函数
+
+	// 这里还有两个字符串操作方法，它们虽然不是strings包里面的函数，
+	// 但是还是值得提一下。一个是获取字符串长度，另外一个是从字符串中
+	// 获取指定索引的字符
+	p("Len: ", len("hello"))
+	p("Char:", "hello"[1])
 }
