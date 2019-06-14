@@ -1,58 +1,33 @@
 package main
 
 import (
-	"fmt"
-	"io/ioutil"
+	"os"
 	"os/exec"
+	"syscall"
 )
 
 func main() {
 
-	// 我们从一个简单的命令开始，这个命令不需要任何参数
-	// 或者输入，仅仅向stdout输出一些信息。`exec.Command`
-	// 函数创建了一个代表外部进程的对象
-	dateCmd := exec.Command("date")
-
-	// `Output`是另一个运行命令时用来处理信息的函数，这个
-	// 函数等待命令结束，然后收集命令输出。如果没有错误发
-	// 生的话，`dateOut`将保存date的信息
-	dateOut, err := dateCmd.Output()
-	if err != nil {
-		panic(err)
+	// 本例中，我们使用`ls`来演示。Go需要一个该命令
+	// 的完整路径，所以我们使用`exec.LookPath`函数来
+	// 找到它
+	binary, lookErr := exec.LookPath("ls")
+	if lookErr != nil {
+		panic(lookErr)
 	}
-	fmt.Println("> date")
-	fmt.Println(string(dateOut))
+	// `Exec`函数需要一个切片参数，我们给ls命令一些
+	// 常见的参数。注意，第一个参数必须是程序名称
+	args := []string{"ls", "-a", "-l", "-h"}
 
-	// 下面我们看一个需要从stdin输入数据的命令，我们将
-	// 数据输入传给外部进程的stdin，然后从它输出到stdout
-	// 的运行结果收集信息
-	grepCmd := exec.Command("grep", "hello")
+	// `Exec`还需要一些环境变量，这里我们提供当前的
+	// 系统环境
+	env := os.Environ()
 
-	// 这里我们显式地获取input/output管道，启动进程，
-	// 向进程写入数据，然后读取输出结果，最后等待进程结束
-	grepIn, _ := grepCmd.StdinPipe()
-	grepOut, _ := grepCmd.StdoutPipe()
-	grepCmd.Start()
-	grepIn.Write([]byte("hello grep\ngoodbye grep"))
-	grepIn.Close()
-	grepBytes, _ := ioutil.ReadAll(grepOut)
-	grepCmd.Wait()
-
-	// 在上面的例子中，我们忽略了错误检测，但是你一样可以
-	// 使用`if err!=nil`模式来进行处理。另外我们仅仅收集了
-	// `StdoutPipe`的结果，同时你也可以用一样的方法来收集
-	// `StderrPipe`的结果
-	fmt.Println("> grep hello")
-	fmt.Println(string(grepBytes))
-
-	// 注意，我们在触发外部命令的时候，需要显式地提供
-	// 命令和参数信息。另外如果你想用一个命令行字符串
-	// 触发一个完整的命令，你可以使用bash的-c选项
-	lsCmd := exec.Command("bash", "-c", "ls -a -l -h")
-	lsOut, err := lsCmd.Output()
-	if err != nil {
-		panic(err)
+	// 这里是`os.Exec`调用。如果一切顺利，我们的原
+	// 进程将终止，然后启动一个新的ls进程。如果有
+	// 错误发生，我们将获得一个返回值
+	execErr := syscall.Exec(binary, args, env)
+	if execErr != nil {
+		panic(execErr)
 	}
-	fmt.Println("> ls -a -l -h")
-	fmt.Println(string(lsOut))
 }
