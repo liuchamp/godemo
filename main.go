@@ -6,7 +6,18 @@ import (
 )
 
 func main() {
-	ti()
+	smread()
+}
+func smread() {
+	queue := make(chan int, 10)
+	queue <- 10
+	queue <- 20
+
+	close(queue)
+
+	for i := 0; i < 10; i++ {
+		fmt.Println(<-queue)
+	}
 }
 
 func ti1() {
