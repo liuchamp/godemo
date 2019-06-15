@@ -9,4 +9,5 @@ logs/
 lastupdate.tmp
 vendor/
 *.rdb
-*godemo*
+main
+*main*
