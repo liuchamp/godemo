@@ -1,33 +1,22 @@
 package main
 
 import (
+	"fmt"
 	"os"
-	"os/exec"
-	"syscall"
 )
 
 func main() {
 
-	// 本例中，我们使用`ls`来演示。Go需要一个该命令
-	// 的完整路径，所以我们使用`exec.LookPath`函数来
-	// 找到它
-	binary, lookErr := exec.LookPath("ls")
-	if lookErr != nil {
-		panic(lookErr)
-	}
-	// `Exec`函数需要一个切片参数，我们给ls命令一些
-	// 常见的参数。注意，第一个参数必须是程序名称
-	args := []string{"ls", "-a", "-l", "-h"}
+	// `os.Args`提供了对命令行参数的访问，注意该
+	// 切片的第一个元素是该程序的运行路径，而
+	// `os.Args[1:]`则包含了该程序的所有参数
+	argsWithProg := os.Args
+	argsWithoutProg := os.Args[1:]
 
-	// `Exec`还需要一些环境变量，这里我们提供当前的
-	// 系统环境
-	env := os.Environ()
+	// 你可以使用索引的方式来获取单个参数
+	arg := os.Args[3]
 
-	// 这里是`os.Exec`调用。如果一切顺利，我们的原
-	// 进程将终止，然后启动一个新的ls进程。如果有
-	// 错误发生，我们将获得一个返回值
-	execErr := syscall.Exec(binary, args, env)
-	if execErr != nil {
-		panic(execErr)
-	}
+	fmt.Println(argsWithProg)
+	fmt.Println(argsWithoutProg)
+	fmt.Println(arg)
 }
