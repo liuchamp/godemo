@@ -11,3 +11,5 @@ vendor/
 *.rdb
 main
 *main*
+godemo
+*godemo*
