@@ -30,5 +30,5 @@
   unused-packages = true
 
 [[constraint]]
-  name = "github.com/go-redis/redis"
-  version = "6.15.3"
+  name = "gopkg.in/yaml.v2"
+  version = "2.2.2"
