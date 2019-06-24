@@ -2,22 +2,18 @@ package main
 
 import (
 	"fmt"
-	"github.com/go-redis/redis"
+	"github.com/spf13/viper"
 )
 
 func main() {
-	redisdb := redis.NewClusterClient(&redis.ClusterOptions{
-		Addrs: []string{
-			"192.168.0.193:7001",
-			"192.168.0.193:7002",
-			"192.168.0.193:7003",
-			"192.168.0.193:7004",
-			"192.168.0.193:7005",
-			"192.168.0.193:7006"},
-	})
-	redisdb.Ping()
-	err := redisdb.ReloadState()
-	if err != nil {
-		fmt.Println(err)
-	}
+
+	vYml := viper.New()
+	vYml.SetConfigName("app")  // name of config file (without extension)
+	vYml.AddConfigPath("conf") // path to look for the config file in
+	//vYml.AddConfigPath("$HOME/.appname") // call multiple times to add many search paths
+	//vYml.AddConfigPath(".")              // optionally look for config in the working directory
+	vYml.SetConfigType("yml")
+	fmt.Println(vYml.ReadInConfig())
+	urls := vYml.GetString("redis.urls")
+	fmt.Println(urls)
 }
