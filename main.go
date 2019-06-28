@@ -1,8 +1,8 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
-	"go.mongodb.org/mongo-driver/bson"
 )
 
 type RegisterDto struct {
@@ -54,11 +54,8 @@ func main() {
 	um.AddUserDto = addu
 	um.BasicModels = bm
 
-	b, ee := bson.MarshalExtJSON(um, false, true)
-	if ee != nil {
-		fmt.Println(ee)
-	} else {
-		fmt.Println(string(b))
-	}
+	bs, _ := json.Marshal(um)
+
+	fmt.Println(string(bs))
 
 }
