@@ -1,7 +1,10 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
+	"github.com/json-iterator/go"
+	"gopkg.in/mgo.v2/bson"
 	"reflect"
 )
 
@@ -33,7 +36,7 @@ func demo1() {
 // 通过反射获取具体值
 func demo2() {
 	type Cat struct {
-		Name string
+		Name string `json:"uml"`
 		Uo   string `json:"uo"`
 		Next *Cat   `json:"child"`
 	}
@@ -46,31 +49,26 @@ func demo2() {
 		},
 	}
 
-	printChildByTag(&d1, "")
+	j, err := jsoniter.Marshal(d1)
+	j, err = json.Marshal(d1)
+	fmt.Println(string(j), err)
+	j, err = json.Marshal(d1)
+	fmt.Println(string(j), err)
+	j, err = bson.Marshal(d1)
+	fmt.Println(string(j), err)
+}
+
+func printChildByTag(d1 interface{}) {
 
 }
 
-func printChildByTag(d1 interface{}, prefix string) {
-	taofcat := reflect.ValueOf(d1)
-	fmt.Println(taofcat.Type().Kind())
-	if taofcat.Kind() == reflect.Ptr {
-		taofcat = taofcat.Elem()
+func printchilds(d1 interface{}, prefix string) {
+	taoftype := reflect.TypeOf(d1)
+	fmt.Println(taoftype.Kind())
+	fmt.Println(taoftype.NumField())
+
+	for i := 0; i < taoftype.NumField(); i++ {
+		fmt.Println(taoftype.Field(i))
 	}
 
-	for i := 0; i < taofcat.NumField(); i++ {
-		childType := taofcat.Field(i)
-		if childType.Type().Kind() == reflect.Ptr {
-			if childType.IsNil() {
-				continue
-			}
-			printChildByTag(childType.Interface(), "")
-		} else if childType.Type().Kind().String() == "struct" {
-			if childType.IsValid() {
-				continue
-			}
-			printChildByTag(childType.Interface(), "")
-		} else {
-			fmt.Println(childType.Type().Name(), childType.Kind(), childType)
-		}
-	}
 }
