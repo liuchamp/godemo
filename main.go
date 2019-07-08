@@ -2,22 +2,22 @@ package main
 
 import (
 	"fmt"
-	"github.com/go-redis/redis"
+	"time"
 )
 
 func main() {
-	redisdb := redis.NewClusterClient(&redis.ClusterOptions{
-		Addrs: []string{
-			"192.168.0.193:7001",
-			"192.168.0.193:7002",
-			"192.168.0.193:7003",
-			"192.168.0.193:7004",
-			"192.168.0.193:7005",
-			"192.168.0.193:7006"},
-	})
-	redisdb.Ping()
-	err := redisdb.ReloadState()
-	if err != nil {
-		fmt.Println(err)
-	}
+	todaystartandend()
+}
+
+func smul(s1 struct{}) {
+	ti := time.Now().UnixNano() / 1e6
+	fmt.Println(ti)
+}
+
+func todaystartandend() {
+	t := time.Now()
+	tm1 := time.Date(t.Year(), t.Month(), t.Day(), 0, 0, 0, 0, t.Location())
+	tm2 := tm1.AddDate(0, 0, 1)
+	println(t.Location())
+	fmt.Println(tm1.UnixNano()/1e6, tm2.UnixNano()/1e6)
 }
