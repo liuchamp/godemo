@@ -18,6 +18,11 @@ func todaystartandend() {
 	t := time.Now()
 	tm1 := time.Date(t.Year(), t.Month(), t.Day(), 0, 0, 0, 0, t.Location())
 	tm2 := tm1.AddDate(0, 0, 1)
-	println(t.Location())
-	fmt.Println(tm1.UnixNano()/1e6, tm2.UnixNano()/1e6)
+	tm3 := tm1.AddDate(0, 0, -1)
+	tm4 := tm1.AddDate(0, 0, -1000)
+
+	fmt.Println("yesterday start", tm3.UnixNano()/1e6)
+	fmt.Println("today start", tm1.UnixNano()/1e6)
+	fmt.Println("today end", tm2.UnixNano()/1e6)
+	fmt.Println("1000 days ago", tm4.UnixNano()/1e6)
 }
