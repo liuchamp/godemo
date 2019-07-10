@@ -6,7 +6,10 @@ import (
 )
 
 func main() {
-	todaystartandend()
+	set := spliteDate(1562164646114, 1562569734140, 1000*30)
+	for e := range set {
+		fmt.Print(e, ",")
+	}
 }
 
 func smul(s1 struct{}) {
@@ -25,4 +28,15 @@ func todaystartandend() {
 	fmt.Println("today start", tm1.UnixNano()/1e6)
 	fmt.Println("today end", tm2.UnixNano()/1e6)
 	fmt.Println("1000 days ago", tm4.UnixNano()/1e6)
+}
+
+func spliteDate(start int, end int, step int) map[int]bool {
+	set := make(map[int]bool)
+	for s := start; s < end; s += step {
+		set[s] = true
+	}
+	if _, ok := set[end]; !ok {
+		set[end] = true
+	}
+	return set
 }
