@@ -15,8 +15,12 @@ func main() {
 			"192.168.0.193:7005",
 			"192.168.0.193:7006"},
 	})
-	redisdb.Ping()
-	err := redisdb.ReloadState()
+	pong, err := redisdb.Ping().Result()
+	if err != nil {
+		return
+	}
+	fmt.Println(pong)
+	err = redisdb.ReloadState()
 	if err != nil {
 		panic(err)
 	}
