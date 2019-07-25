@@ -13,7 +13,7 @@ import (
 )
 
 func main() {
-	umsk()
+	stmul()
 }
 func readFile() error {
 	in, e := os.Open("main.go")
@@ -125,4 +125,38 @@ friend name is {{.Fname}}
 `,
 	))
 	t.Execute(os.Stdout, p)
+}
+
+type EntetiesClass struct {
+	Name  string
+	Value int32
+}
+
+// In the template, we use rangeStruct to turn our struct values
+// into a slice we can iterate over
+const htmlTemplate = `
+{{range $index, $element := .}}
+    {{$index}}
+        {{range $element}}
+            {{.Name}} {{.Value}}
+        {{end}}
+{{end}}
+`
+
+func stmul() {
+	data := map[string][]EntetiesClass{
+		"Yoga":    {{"Yoga1", 13}, {"Yoga2", 15}},
+		"Pilates": {{"Pilates1", 3}, {"Pilates2", 6}, {"Pilates3", 9}},
+	}
+
+	t := template.New("t")
+	t, err := t.Parse(htmlTemplate)
+	if err != nil {
+		panic(err)
+	}
+
+	err = t.Execute(os.Stdout, data)
+	if err != nil {
+		panic(err)
+	}
 }
