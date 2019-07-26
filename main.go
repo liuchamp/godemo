@@ -2,33 +2,13 @@ package main
 
 import (
 	"fmt"
-	yrd "github.com/garyburd/redigo/redis"
 	"github.com/go-redis/redis"
 )
 
 func main() {
 	ExampleNewClient2()
 }
-func ExampleClientGary() {
-	c, err := yrd.Dial("tcp", "192.168.0.193:7003")
-	if err != nil {
-		fmt.Println("Connect to redis error", err)
-		return
-	}
-	defer c.Close()
 
-	_, err = c.Do("SET", "mykey", "superWang")
-	if err != nil {
-		fmt.Println("redis set failed:", err)
-	}
-
-	username, err := yrd.String(c.Do("GET", "mykey"))
-	if err != nil {
-		fmt.Println("redis get failed:", err)
-	} else {
-		fmt.Printf("Get mykey: %v \n", username)
-	}
-}
 func ExampleNewClient() {
 	client := redis.NewClient(&redis.Options{
 		Addr: "192.168.0.193:7005",
