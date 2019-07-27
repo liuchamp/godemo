@@ -75,7 +75,7 @@ func printchilds(d1 interface{}, prefix string) {
 }
 
 func demo() {
-	p := ref.Person{"sddaf", 32}
+	p := ref.Person{"sddaf", 32, ""}
 	v := reflect.ValueOf(p)
 	tf := reflect.TypeOf(p)
 	for i := 0; i < v.NumField(); i++ {
