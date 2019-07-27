@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/json-iterator/go"
+	"github.com/liuchamp/godemo/ref"
 	"gopkg.in/mgo.v2/bson"
 	"reflect"
 )
@@ -16,7 +17,7 @@ const (
 )
 
 func main() {
-	demo2()
+	demo()
 }
 func demo1() {
 	// 声明一个空结构体
@@ -71,4 +72,24 @@ func printchilds(d1 interface{}, prefix string) {
 		fmt.Println(taoftype.Field(i))
 	}
 
+}
+
+func demo() {
+	p := ref.Person{"sddaf", 32}
+	v := reflect.ValueOf(p)
+	tf := reflect.TypeOf(p)
+	for i := 0; i < v.NumField(); i++ {
+		f := v.Field(i)
+		fmt.Println(f.String())
+		// fs,_ :=tf.FieldByName(i)
+		fs := tf.Field(i)
+		switch f.Kind() {
+		case reflect.String:
+			fmt.Println(f.String())
+			fmt.Println(fs.Tag.Get("mata"))
+
+		case reflect.Int:
+			fmt.Println(f.Int())
+		}
+	}
 }
