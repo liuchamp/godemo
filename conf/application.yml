@@ -4,3 +4,7 @@ app:
   tags:
     - 1651
     - dsiangasf
+  include:
+    - consul
+    - redis
+    - mongo

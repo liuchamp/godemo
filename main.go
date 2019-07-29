@@ -9,7 +9,7 @@ import (
 )
 
 func main() {
-	demo2()
+	getAppconfig()
 }
 
 func demo1() {
@@ -64,4 +64,33 @@ func demoEvn() {
 	}
 	v, _ := json.Marshal(deappconfig)
 	fmt.Print(string(v))
+}
+
+type appConfig struct {
+	Name    string
+	Port    int
+	Tags    []string
+	Include []string
+}
+
+func getAppconfig() {
+	ymlViper, err := newFileViper("conf", "yml")
+	if err != nil {
+		log.Fatal(err)
+	}
+	var deappconfig appConfig
+	if err := ymlViper.UnmarshalKey("app", &deappconfig); err != nil {
+		log.Fatal("配置解析失败", err)
+	}
+}
+
+func newFileViper(path, fileType string) (*viper.Viper, error) {
+	vpApp := viper.New()
+	vpApp.AddConfigPath(path)
+	vpApp.SetConfigType(fileType)
+	err := vpApp.ReadInConfig()
+	if err != nil {
+		return nil, err
+	}
+	return vpApp, nil
 }
