@@ -9,7 +9,7 @@ import (
 )
 
 func main() {
-	demoEvn()
+	demo2()
 }
 
 func demo1() {
