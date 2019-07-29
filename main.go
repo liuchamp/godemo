@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"github.com/robfig/cron"
 	"log"
 )
@@ -8,11 +9,15 @@ import (
 func main() {
 	i := 0
 	c := cron.New()
-	spec := "*/5 * * * ?"
-	c.AddFunc(spec, func() {
+	spec := "*/1 * * * ?"
+	id, err := c.AddFunc(spec, func() {
 		i++
-		log.Println("cron running", i)
+		fmt.Println("cron running", i)
 	})
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println(id)
 	c.Start()
 	select {}
 }
