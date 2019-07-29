@@ -1,23 +1,18 @@
 package main
 
 import (
-	"fmt"
-	"github.com/go-redis/redis"
+	"github.com/robfig/cron"
+	"log"
 )
 
 func main() {
-	redisdb := redis.NewClusterClient(&redis.ClusterOptions{
-		Addrs: []string{
-			"192.168.0.193:7001",
-			"192.168.0.193:7002",
-			"192.168.0.193:7003",
-			"192.168.0.193:7004",
-			"192.168.0.193:7005",
-			"192.168.0.193:7006"},
+	i := 0
+	c := cron.New()
+	spec := "*/5 * * * ?"
+	c.AddFunc(spec, func() {
+		i++
+		log.Println("cron running", i)
 	})
-	redisdb.Ping()
-	err := redisdb.ReloadState()
-	if err != nil {
-		fmt.Println(err)
-	}
+	c.Start()
+	select {}
 }

@@ -30,5 +30,5 @@
   unused-packages = true
 
 [[constraint]]
-  name = "github.com/go-redis/redis"
-  version = "6.15.3"
+  name = "github.com/robfig/cron"
+  version = "3.0.0"
