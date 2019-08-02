@@ -2,6 +2,8 @@ package main
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/liuchamp/godemo/controllers"
+	"github.com/liuchamp/godemo/services"
 )
 
 func main() {
@@ -10,6 +12,8 @@ func main() {
 	router.GET("/ping", func(c *gin.Context) {
 		c.String(200, "pong")
 	})
-
+	s := services.TestService{}
+	c := controllers.TestController{Service: s}
+	router.GET("test", c.Demo)
 	router.Run()
 }
