@@ -20,3 +20,7 @@ func (ts *TestService) GetOne() models.Test {
 	t.Next = &tc
 	return t
 }
+func (ts *TestService) GetMune() models.Menu {
+	m := models.Menu{}
+	return m
+}

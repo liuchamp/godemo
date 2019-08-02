@@ -14,3 +14,7 @@ func (ts *TestController) Demo(c *gin.Context) {
 	t := ts.Service.GetOne()
 	c.JSON(http.StatusOK, t)
 }
+func (ts *TestController) Menu(c *gin.Context) {
+	t := ts.Service.GetOne()
+	c.JSON(http.StatusOK, t)
+}
