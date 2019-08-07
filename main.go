@@ -1,23 +1,37 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
-	"github.com/go-redis/redis"
 )
 
 func main() {
-	redisdb := redis.NewClusterClient(&redis.ClusterOptions{
-		Addrs: []string{
-			"192.168.0.193:7001",
-			"192.168.0.193:7002",
-			"192.168.0.193:7003",
-			"192.168.0.193:7004",
-			"192.168.0.193:7005",
-			"192.168.0.193:7006"},
-	})
-	redisdb.Ping()
-	err := redisdb.ReloadState()
+	DemosMap()
+}
+
+func DemosMap() {
+
+	jsonString := `{
+    "b": "2",
+    "a": "1",
+    "c": "3"
+}`
+	var oo map[string]interface{}
+	err := json.Unmarshal([]byte(jsonString), &oo)
 	if err != nil {
-		fmt.Println(err)
+		panic(err)
+	}
+	for k, v := range oo {
+		fmt.Println(k, v)
+	}
+
+	jss := `["string","json","extent"]`
+	var sars []string
+	err = json.Unmarshal([]byte(jss), &sars)
+	if err != nil {
+		panic(err)
+	}
+	for k, v := range sars {
+		fmt.Println(k, v)
 	}
 }
