@@ -13,7 +13,7 @@ import (
 )
 
 func main() {
-	stmul()
+	parseText()
 }
 func readFile() error {
 	in, e := os.Open("main.go")
