@@ -26,7 +26,7 @@ func getUser(c *gin.Context) map[string]interface{} {
 	var btm map[string]interface{}
 
 	s, _ := ioutil.ReadAll(c.Request.Body)
-	json.Unmarshal(s, &btm)
-	fmt.Println(btm)
+	err := json.Unmarshal(s, &btm)
+	fmt.Println(btm, err)
 	return btm
 }
