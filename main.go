@@ -15,6 +15,7 @@ func main() {
 	s := services.TestService{}
 	c := controllers.TestController{Service: s}
 	router.GET("test", c.Demo)
+	router.GET("sim", c.Deok)
 	router.PUT("test", c.Menu)
 	router.Run()
 }

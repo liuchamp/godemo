@@ -24,3 +24,11 @@ func (ts *TestService) GetMune() models.Menu {
 	m := models.Menu{}
 	return m
 }
+
+func (ts *TestService) GetSim() models.Sim {
+	m := models.Sim{}
+	m.Name = "屈的写的"
+	m.Mod = "sdaf"
+	m.BenKis = "sdafdsfadsaf"
+	return m
+}

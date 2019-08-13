@@ -10,8 +10,9 @@ type Test struct {
 }
 
 type Sim struct {
-	Name string
-	Mod  string
+	Name   string
+	Mod    string
+	BenKis string
 }
 
 type Menu struct {
