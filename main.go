@@ -13,7 +13,7 @@ import (
 )
 
 func main() {
-	parseText()
+	testLen()
 }
 func readFile() error {
 	in, e := os.Open("main.go")
@@ -159,4 +159,27 @@ func stmul() {
 	if err != nil {
 		panic(err)
 	}
+}
+
+func testLen() {
+
+	data := []string{"dsafdsa", "dsfasdads", "dafssdafaa", "dsagisdnafds"}
+	var temp = `{{ $length := qmid .Data }} []string { {{range $index,$field := .Data}}"{{$field}}"{{ if gt $length $index }},{{end}}{{end}} }`
+	t := template.New("t").Funcs(template.FuncMap{"qmid": qmid})
+	t, err := t.Parse(temp)
+	if err != nil {
+		panic(err)
+	}
+	type stemp struct {
+		Data []string
+	}
+	s := stemp{Data: data}
+	err = t.Execute(os.Stdout, s)
+	if err != nil {
+		panic(err)
+	}
+}
+
+func qmid(v []string) int {
+	return len(v) - 1
 }
