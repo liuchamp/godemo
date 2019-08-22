@@ -1,23 +1,28 @@
 package main
 
 import (
-	"fmt"
-	"github.com/go-redis/redis"
+	"github.com/casbin/casbin"
+	"github.com/gin-contrib/authz"
+	"github.com/gin-gonic/gin"
+	"log"
 )
 
 func main() {
-	redisdb := redis.NewClusterClient(&redis.ClusterOptions{
-		Addrs: []string{
-			"192.168.0.193:7001",
-			"192.168.0.193:7002",
-			"192.168.0.193:7003",
-			"192.168.0.193:7004",
-			"192.168.0.193:7005",
-			"192.168.0.193:7006"},
-	})
-	redisdb.Ping()
-	err := redisdb.ReloadState()
+
+	// load the casbin model and policy from files, database is also supported.
+	e, err := casbin.NewEnforcer("authz_model.conf", "authz_policy.csv")
 	if err != nil {
-		fmt.Println(err)
+		log.Fatal("find users")
 	}
+	// define your router, and use the Casbin authz middleware.
+	// the access that is denied by authz will return HTTP 403 error.
+	router := gin.New()
+	router.Use(authz.NewAuthorizer(e))
+
+	router.GET("/ping", func(c *gin.Context) {
+		c.JSON(200, gin.H{
+			"message": "pong",
+		})
+	})
+	router.Run()
 }
