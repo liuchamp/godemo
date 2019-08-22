@@ -56,7 +56,7 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	//astutil.AddImport(fset, f, "app")
+	// astutil.AddImport(fset, f, "app")
 	// Print the AST.
 	for _, v := range f.Imports {
 		fmt.Println(v.Path.Value)
