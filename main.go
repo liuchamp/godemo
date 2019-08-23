@@ -2,11 +2,15 @@ package main
 
 import (
 	"fmt"
+	"github.com/liuchamp/godemo/fmud"
 )
 
 func main() {
 
-	impTest2()
+	fd := fmud.NewInUs()
+	fd.Find()
+	fd.Geter()
+
 }
 func testsingleInherit() {
 	son := Son{Base{"Start"}}
