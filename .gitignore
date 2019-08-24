@@ -1,0 +1,16 @@
+coverage/
+.idea/
+run/
+logs/
+.DS_Store
+.vscode
+*.swp
+*.lock
+lastupdate.tmp
+vendor/
+*.rdb
+main
+*main*
+!main.go
+godemo
+*godemo*
