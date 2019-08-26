@@ -1,28 +1,43 @@
 package main
 
 import (
+	"fmt"
 	"github.com/casbin/casbin"
-	"github.com/gin-contrib/authz"
-	"github.com/gin-gonic/gin"
-	"log"
+	mongodbadapter "github.com/casbin/mongodb-adapter"
 )
 
 func main() {
 
-	// load the casbin model and policy from files, database is also supported.
-	e, err := casbin.NewEnforcer("authz_model.conf", "authz_policy.csv")
-	if err != nil {
-		log.Fatal("find users")
-	}
-	// define your router, and use the Casbin authz middleware.
-	// the access that is denied by authz will return HTTP 403 error.
-	router := gin.New()
-	router.Use(authz.NewAuthorizer(e))
+	// Initialize a MongoDB adapter and use it in a Casbin enforcer:
+	// The adapter will use the database named "casbin".
+	// If it doesn't exist, the adapter will create it automatically.
+	a := mongodbadapter.NewAdapter("192.168.0.193:27017") // Your MongoDB URL.
 
-	router.GET("/ping", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"message": "pong",
-		})
-	})
-	router.Run()
+	// Or you can use an existing DB "abc" like this:
+	// The adapter will use the table named "casbin_rule".
+	// If it doesn't exist, the adapter will create it automatically.
+	// a := mongodbadapter.NewAdapter("127.0.0.1:27017/abc")
+
+	e, err := casbin.NewEnforcer("authz_model.conf", a)
+	if err != nil {
+		panic(err)
+	}
+
+	// Load the policy from DB.
+	e.LoadPolicy()
+
+	// Check the permission.
+	s, err := e.Enforce("alice", "data1", "read")
+	fmt.Println(s, err)
+
+	e.AddPolicy("alice", "data1", "read")
+
+	s, err = e.Enforce("alice", "data1", "read")
+	fmt.Println(s, err)
+	// Modify the policy.
+	// e.AddPolicy(...)
+	// e.RemovePolicy(...)
+
+	// Save the policy back to DB.
+	e.SavePolicy()
 }
