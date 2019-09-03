@@ -31,8 +31,15 @@ func main() {
 	fmt.Println(s, err)
 
 	e.AddPolicy("alice", "data1", "read")
+	e.AddRoleForUser("dadsa", "admin")
+	e.AddPermissionForUser("admin", "dsadfas", "read")
+	e.AddPermissionForUser("admin", "data3", "read")
+	e.AddPermissionForUser("admin", "dagt4", "read")
 
 	s, err = e.Enforce("alice", "data1", "read")
+	fmt.Println(s, err)
+	s, err = e.Enforce("dadsa", "dagt4", "read")
+
 	fmt.Println(s, err)
 	// Modify the policy.
 	// e.AddPolicy(...)
