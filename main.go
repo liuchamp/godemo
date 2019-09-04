@@ -1,23 +1,21 @@
 package main
 
-import (
-	"fmt"
-	"github.com/go-redis/redis"
-)
+import "fmt"
+
+func calc(index string, a, b int) int {
+	ret := a + b
+	fmt.Println(index, a, b, ret)
+	return ret
+}
 
 func main() {
-	redisdb := redis.NewClusterClient(&redis.ClusterOptions{
-		Addrs: []string{
-			"192.168.0.193:7001",
-			"192.168.0.193:7002",
-			"192.168.0.193:7003",
-			"192.168.0.193:7004",
-			"192.168.0.193:7005",
-			"192.168.0.193:7006"},
-	})
-	redisdb.Ping()
-	err := redisdb.ReloadState()
-	if err != nil {
-		fmt.Println(err)
-	}
+	a := 1 //line 1
+	b := 2 //2
+	calc("30", a, b)
+	defer calc("1", a, calc("10", a, b)) //3
+	a = 0                                //4
+	defer calc("2", a, calc("20", a, b)) //5
+	b = 1                                //6
+
+	calc("40", a, b)
 }
