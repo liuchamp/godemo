@@ -32,6 +32,15 @@ Circle:
 	}
 }
 
+type Annimer interface {
+	OnStart() error
+}
+
+type Perase interface {
+	Annimer
+	Str() error
+}
+
 func main() {
 
 }
