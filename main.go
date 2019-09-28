@@ -9,7 +9,41 @@ import (
 )
 
 func main() {
-	getAppconfig()
+
+	sdfsa := []ChanRegissdfassdfa{
+		{CRID: 1,
+			Channel: "sdafdsa",
+			Enable:  true,
+		},
+	}
+	bst, _ := json.Marshal(sdfsa)
+	fmt.Println(string(bst))
+}
+
+type ChanRegissdfassdfa struct {
+	CRID    int64  `json:"id" bson:"_id"`
+	Channel string `json:"channel" bson:"channel"` // 渠道名称
+	Enable  bool   `json:"enable" bson:"enable"`   // 开关
+}
+
+func deom() {
+	vYml, err := newFileViper("conf", "setting", "json")
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	var csds []ChanRegissdfassdfa
+	err = vYml.UnmarshalKey("channelReg", &csds)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	if len(csds) > 0 {
+		for _, v := range csds {
+			fmt.Println(v)
+		}
+	}
+
 }
 
 func demo1() {
@@ -74,7 +108,7 @@ type appConfig struct {
 }
 
 func getAppconfig() {
-	ymlViper, err := newFileViper("conf", "yml")
+	ymlViper, err := newFileViper("conf", "application", "yml")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -85,10 +119,10 @@ func getAppconfig() {
 	fmt.Println(deappconfig)
 }
 
-func newFileViper(path, fileType string) (*viper.Viper, error) {
+func newFileViper(path, name, fileType string) (*viper.Viper, error) {
 	vpApp := viper.New()
 	vpApp.AddConfigPath(path)
-	vpApp.SetConfigName("application")
+	vpApp.SetConfigName(name)
 	vpApp.SetConfigType(fileType)
 	err := vpApp.ReadInConfig()
 	if err != nil {
