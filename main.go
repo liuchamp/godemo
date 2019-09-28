@@ -82,11 +82,13 @@ func getAppconfig() {
 	if err := ymlViper.UnmarshalKey("app", &deappconfig); err != nil {
 		log.Fatal("配置解析失败", err)
 	}
+	fmt.Println(deappconfig)
 }
 
 func newFileViper(path, fileType string) (*viper.Viper, error) {
 	vpApp := viper.New()
 	vpApp.AddConfigPath(path)
+	vpApp.SetConfigName("application")
 	vpApp.SetConfigType(fileType)
 	err := vpApp.ReadInConfig()
 	if err != nil {
