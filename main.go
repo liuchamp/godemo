@@ -19,6 +19,7 @@ type Smou struct {
 type TestDemo struct {
 	ID  primitive.ObjectID `json:"_id" bson:"_id"`
 	Sid string             `json:"sd" bson:"sd"`
+	Sd  int64              `json:"ss" bson:"ss"`
 }
 
 func main() {
