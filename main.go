@@ -8,8 +8,8 @@ import (
 
 func main() {
 	i := 0
-	c := cron.New()
-	spec := "*/1 * * * ?"
+	c := cron.New(cron.WithSeconds())
+	spec := "*/15 * * * * ?"
 	id, err := c.AddFunc(spec, func() {
 		i++
 		fmt.Println("cron running", i)
