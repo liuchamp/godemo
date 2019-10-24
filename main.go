@@ -118,7 +118,7 @@ func gettormono() {
 
 	n := time.Now().Format("2006-01-02")
 	t, _ := time.ParseInLocation("2006-01-02 15:04:05", n+" 23:59:59", time.Local)
-	t2, _ := time.ParseInLocation("2006-01-02", n, time.Local)
+	t2, _ := time.ParseInLocation("2006-01-02", time.Now().Format("2006-01-02"), time.Local)
 	fmt.Println("t2 ---->" + t2.String())
 	fmt.Println(t.AddDate(0, 0, -1).String())
 	fmt.Println("t1 ---->" + t2.AddDate(0, 0, -1).String())
