@@ -6,10 +6,12 @@ import (
 	ut "github.com/go-playground/universal-translator"
 	"gopkg.in/go-playground/validator.v9"
 	zh_translations "gopkg.in/go-playground/validator.v9/translations/zh"
+	"log"
+	"reflect"
 )
 
 func main() {
-	dutystart()
+	std()
 }
 
 // User contains user information
@@ -145,20 +147,43 @@ func std() {
 }
 func validateVariable(validate *validator.Validate) {
 
-	myEmail := "joeybloggs.gmail.com"
-
-	errs := validate.Var(myEmail, "required,email")
-
-	if errs != nil {
-		fmt.Println(errs) // output: Key: "" Error:Field validation for "" failed on the "email" tag
-		return
-	}
+	//myEmail := "joeybloggs.gmail.com"
+	//
+	//errs := validate.Var(myEmail, "required,email")
+	//
+	//if errs != nil {
+	//	fmt.Println(errs) // output: Key: "" Error:Field validation for "" failed on the "email" tag
+	//	return
+	//}
 	myEmail2 := "dsafdsiangsd@gmail.com"
-	errs = validate.Var(myEmail2, "required,email")
+	errs := validate.Var(myEmail2, "required,email")
 
 	if errs != nil {
 		fmt.Println(errs) // output: Key: "" Error:Field validation for "" failed on the "email" tag
 		return
 	}
 	// email ok, move on
+
+	u := User{
+		FirstName:      "ye",
+		LastName:       "xingyun",
+		Age:            200,
+		Email:          myEmail2,
+		FavouriteColor: "blue",
+	}
+	err := validate.Struct(u)
+	if err != nil {
+		if _, ok := err.(*validator.InvalidValidationError); ok {
+			fmt.Println(err)
+			return
+		}
+		typ := reflect.TypeOf(&u)
+		for _, err := range err.(validator.ValidationErrors) {
+			fs, ok := typ.Elem().FieldByName(err.Field())
+			if ok {
+				log.Println(fs.Tag.Get("validate"))
+			}
+			log.Println(err.Field(), "---->", err.Param(), "---->", err.Tag(), "--->", err.ActualTag(), "---->", err.Namespace(), "---->", err.StructNamespace())
+		}
+	}
 }
