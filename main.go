@@ -3,11 +3,13 @@ package main
 import (
 	"fmt"
 	"math/rand"
+	"strconv"
+	"strings"
 	"time"
 )
 
 func main() {
-	randtest2()
+	pa()
 }
 
 func randtest() {
@@ -59,4 +61,13 @@ func getRandInt(rn int) int {
 		return r.Intn(rn)
 	}
 
+}
+
+//解析十六进制
+func pa() {
+	s := strings.Replace("0x86", "0x", "", 1)
+	c, ok := strconv.ParseInt(s, 16, 0)
+	if ok == nil {
+		fmt.Print(c)
+	}
 }
