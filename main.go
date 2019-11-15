@@ -3,15 +3,35 @@ package main
 import (
 	"fmt"
 	"github.com/go-redis/redis"
+	"github.com/liuchamp/godemo/model"
 )
 
 func main() {
-	ExampleNewClient2()
+	TestRedisStruct()
+}
+
+func TestRedisStruct() {
+	client := redis.NewClient(&redis.Options{
+		Addr: "127.0.0.1:6379",
+		// Password: "", // no password set
+		DB: 0, // use default DB
+	})
+	u := model.User{
+		Username: "test",
+		RoleID:   "123548894641685165",
+	}
+	client.Set("s", &u, 3600000)
+	us := new(model.User)
+	er := client.Get("s").Scan(us)
+	if er != nil {
+		fmt.Println("s does not exist", er)
+	}
+	fmt.Println(us)
 }
 
 func ExampleNewClient() {
 	client := redis.NewClient(&redis.Options{
-		Addr: "192.168.0.193:7005",
+		Addr: "127.0.0.1:6379",
 		// Password: "", // no password set
 		DB: 0, // use default DB
 	})
@@ -35,7 +55,7 @@ func ExampleNewClient() {
 }
 func ExampleNewClient2() {
 	client := redis.NewClient(&redis.Options{
-		Addr: "192.168.0.193:7005",
+		Addr: "127.0.0.1:6379",
 		// Password: "", // no password set
 		DB: 0, // use default DB
 	})
@@ -57,7 +77,7 @@ func ExampleNewClient2() {
 
 func ExampleClient() {
 	client := redis.NewClient(&redis.Options{
-		Addr: "92.168.0.193:7003",
+		Addr: "127.0.0.1:6379",
 		// Password: "", // no password set
 		DB: 0, // use default DB
 	})
