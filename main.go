@@ -6,10 +6,10 @@ import (
 )
 
 func main() {
-	set := spliteDate(1562164646114, 1562569734140, 1000*30)
-	for e := range set {
-		fmt.Print(e, ",")
-	}
+	timelocal, err := time.LoadLocation("Asia/Chongqing")
+	fmt.Println(err, timelocal)
+	st := time.Now().In(timelocal)
+	fmt.Println(st.String())
 }
 
 func smul(s1 struct{}) {
