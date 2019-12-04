@@ -1,24 +1,121 @@
 # Go Demo
 学习和使用go。
 
-## [指针](https://github.com/liuchamp/godemo/tree/feature/point)
-go语言中指针，采用分离的方式，同时去掉了c/c++中的偏移，避免出现野指针的情况。导致程序异常崩溃。
-## strings库
 
-## [函数](https://github.com/liuchamp/godemo/tree/feature/func)
-在go语言中，需要注意匿名函数访问外部变量。函数也可以作为变量来使用，实现会回调等。
+## Unmarshal vs Decode
+json.Unmarshal 操作对象是一个 []byte，也就意味着被处理的JSON要全部加载到内存。如果有一个加载完的JSON使用json.Unmarshal会快一些。
 
-通过函数变量，可以实现类似于netty中的[链式调用](https://github.com/liuchamp/godemo/commit/6a8b61eb94319e46d38cfa18aa2713b1a83e1cf2)。
+json.Decoder 操作的是一个stream，或者其他实现了io.Reader接口的类型。意味着可以在接收或传输的同时对其进行解析。当处理一组较大数据时无需重新copy整个JSON到内存中。
 
-[闭包函数的记忆特性](https://github.com/liuchamp/godemo/commit/cfcda04a2bb1610c419489b3c95ac8cfefbb781b)，在开发中经常使用。
-## redis学习
-本次学习是使用的redis官方库. 
-1. [单redis使用](https://github.com/liuchamp/godemo/tree/feature/redis/single)
-2. [redis集群使用](https://github.com/liuchamp/godemo/tree/feature/redis/cluster)
+最好的选择办法如下：
 
-## MongoDB学习
-### [mgo](https://gopkg.in/mgo.v2)
-1. [单客户端连接]()
-2. [集群连接]()
+如果数据来自一个io.Reader或者需要从一个stream中读取数据，就选择json.Decoder
+如果已经将整个JSON加载到内存中了就使用json.Unmarshal
 
-开发中，客户端的session model的处理。
+## 数字的解析
+默认情况下，go对json解析过程中遇到的数字都会当做float64处理。如果数字过大会有精度丢失。可以使用json.Number来处理。
+
+### Unmarshal
+```
+val := `{"id": 100010001000100010001000 }` //26位数字
+var y map[string]json.Number
+json.Unmarshal([]byte(val), &y)
+fmt.Println(y) //map[id:100010001000100010001000]
+
+z, _ := json.Marshal(struct {
+    Id json.Number `json:"id"`
+}{y["id"]})
+fmt.Println(string(z)) //{"id":100010001000100010001000}
+```
+### Decode
+```
+val := `{"id": 100010001000100010001000 }` //26位数字
+val2 := strings.NewReader(val)             //先转成io.Reader
+d := json.NewDecoder(val2)
+d.UseNumber() //标记使用josn.Number
+
+var x map[string]interface{}
+if err := d.Decode(&x); err != nil {
+    panic(err)
+}
+fmt.Printf("%#v\n", x) //相应值的Go语法表示
+
+newJson, _ := json.Marshal(x)
+fmt.Println(string(newJson)) //json.Number编组结果
+```
+输出结果：
+```
+map[string]interface {}{"id":"100010001000100010001000"}
+{"id":100010001000100010001000}
+```
+使用json.Decoder只能操作io.Reader类型的JSON数据。
+
+## 不定类型的解析
+有时候遇到字段不定的JSON，需要一边判断一边解析。如：
+```
+t1 := `{"type":"a", id:"aaa"}`
+t2 := `{"type":"b", id:22222}`
+```
+### 解组到interface{}
+可以先统一解组到interface{} 然后判断关键字段再进行后续处理。
+```
+type Data struct {
+    Type string      `json:"type"`
+    Id   interface{} `json:"id"`
+}
+
+func decode(t string) {
+    var x Data
+    err := json.Unmarshal([]byte(t), &x)
+    if err != nil {
+        panic(err)
+    }
+    if x.Type == "a" {
+        fmt.Println(x.Id.(string))
+    } else {
+        fmt.Println(x.Id.(float64)) //json解析中number默认作为float64解析
+    }
+}
+func main() {
+    t1 := `{"type":"a", "id":"aaa"}`
+    t2 := `{"type":"b", "id":22222}`
+
+    decode(t1)
+    decode(t2)
+}
+```
+结果：
+```
+aaa
+22222
+```
+### 使用json.RawMessage
+使用RawMessage便于分步Unmarshal
+```
+type Resp struct {
+    Type string          `json:"type"`
+    Data json.RawMessage `json:"data"`
+}
+type Data struct {
+    Id json.Number `json:"id"` //处理大数
+}
+
+func main() {
+    t := `{"type": "a", "data":{"id": 1234567890123456789012345}}`
+
+    var x Resp
+    var y Data
+
+    json.Unmarshal([]byte(t), &x)
+
+    //进一步解组
+    if "a" == x.Type {
+        json.Unmarshal(x.Data, &y)
+    }
+
+    fmt.Println(y.Id)
+
+    r, _ := json.Marshal(x)
+    fmt.Println(string(r))
+}
+```
