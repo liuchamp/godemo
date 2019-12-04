@@ -1,37 +1,32 @@
 package main
 
 import (
-	"encoding/json"
-	"fmt"
+    "fmt"
 )
 
 func main() {
-	DemosMap()
+    arrayCap()
+    s := []int{5}
+    fmt.Println(cap(s)) //1
+    
+    s = append(s, 7)
+    fmt.Println(cap(s)) //2
+    
+    s = append(s, 9)
+    fmt.Println(cap(s)) //4
+    
+    x := append(s, 11)
+    y := append(s, 12)
+
+    fmt.Println(s, x, y) //[5 7 9] [5 7 9 12] [5 7 9 12]
 }
 
-func DemosMap() {
-
-	jsonString := `{
-    "b": "2",
-    "a": "1",
-    "c": "3"
-}`
-	var oo map[string]interface{}
-	err := json.Unmarshal([]byte(jsonString), &oo)
-	if err != nil {
-		panic(err)
-	}
-	for k, v := range oo {
-		fmt.Println(k, v)
-	}
-
-	jss := `["string","json","extent"]`
-	var sars []string
-	err = json.Unmarshal([]byte(jss), &sars)
-	if err != nil {
-		panic(err)
-	}
-	for k, v := range sars {
-		fmt.Println(k, v)
-	}
+// 测试初始容量
+func arrayCap()  {
+    s:=[]int{5}
+    fmt.Println(cap(s)) //1
+    p:=[]int{5,12,6}
+    fmt.Println(cap(p)) //3
+    s= append(s, 1,6)
+    fmt.Println(cap(s)) //4
 }
