@@ -6,15 +6,23 @@ import (
 )
 
 func main() {
-	sum()
+	lmd5()
 }
 
+func lmd5() {
+	s := "e10adc3949ba59abbe56e057f20f883e"
+	fmt.Println(len(s))
+}
 func test1() {
 	s12 := "1231"
 	s.Join([]string{s12, "ewrwer"}, ",")
 	fmt.Println(s12)
 }
-
+func spl() {
+	ssr := "{\"token\": \"c3ba4c4f-a3b3-4747-b82f-9e40736a64c8\"}"
+	sr := s.Split(ssr, "\"")
+	fmt.Println(sr)
+}
 func test2() {
 	var ss []string
 	ss = append(ss, "123123")
