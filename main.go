@@ -6,12 +6,17 @@ import (
 )
 
 func main() {
+	getUnixBins(1575705600, 15*60, 192)
+
+}
+
+func timezonetest() {
+
 	timelocal, err := time.LoadLocation("Asia/Chongqing")
 	fmt.Println(err, timelocal)
 	st := time.Now().In(timelocal)
 	fmt.Println(st.String())
 }
-
 func smul(s1 struct{}) {
 	ti := time.Now().UnixNano() / 1e6
 	fmt.Println(ti)
@@ -39,4 +44,16 @@ func spliteDate(start int, end int, step int) map[int]bool {
 		set[end] = true
 	}
 	return set
+}
+
+func getUnixBins(start, step, total int64) {
+	fmt.Print("[")
+	for i := int64(0); i <= total; i++ {
+		if i != 0 {
+			fmt.Print(",", start+step*i)
+		} else {
+			fmt.Print(start + step*i)
+		}
+	}
+	fmt.Print("]")
 }
