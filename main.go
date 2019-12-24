@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"regexp"
 	s "strings"
 )
 
@@ -59,4 +60,35 @@ func sum() {
 	// 获取指定索引的字符
 	p("Len: ", len("hello"))
 	p("Char:", "hello"[1])
+}
+
+func testRegex() {
+	const urlPattern = `((https|http|ftp|rtsp|mms)?://)?` + // 协议
+		`(([0-9a-zA-Z]+:)?[0-9a-zA-Z_-]+@)?` + // pwd:user@
+		"(" + ipPattern + "|(" + domainPattern + "))" + // IP 或域名
+		`(:\d{1,5})?` + // 端口
+		`(/+[a-zA-Z0-9][a-zA-Z0-9_.-]*)*/*` + // path
+		`(\?([a-zA-Z0-9_-]+(=.*&?)*)*)*` // query
+
+}
+
+func regexpCompile(str string) *regexp.Regexp {
+	return regexp.MustCompile("^" + str + "$")
+}
+
+func URL(val interface{}) bool {
+	return isMatch(url, val)
+}
+
+func isMatch(exp *regexp.Regexp, val interface{}) bool {
+	switch v := val.(type) {
+	case []rune:
+		return exp.MatchString(string(v))
+	case []byte:
+		return exp.Match(v)
+	case string:
+		return exp.MatchString(v)
+	default:
+		return false
+	}
 }
