@@ -1,23 +1,20 @@
 package main
 
 import (
-	"fmt"
-	"github.com/go-redis/redis"
+	"github.com/patrickmn/go-cache"
+	"time"
 )
 
 func main() {
-	redisdb := redis.NewClusterClient(&redis.ClusterOptions{
-		Addrs: []string{
-			"192.168.0.193:7001",
-			"192.168.0.193:7002",
-			"192.168.0.193:7003",
-			"192.168.0.193:7004",
-			"192.168.0.193:7005",
-			"192.168.0.193:7006"},
-	})
-	redisdb.Ping()
-	err := redisdb.ReloadState()
-	if err != nil {
-		fmt.Println(err)
+	usec := cache.New(5*time.Minute, 6*time.Minute)
+	usec.Set("user1111", 1000, cache.DefaultExpiration)
+	usec.Set("user1112", "1000", cache.DefaultExpiration)
+	s, ok := usec.Get("user1111")
+	if ok {
+		println(s.(int))
+	}
+	s2, ok := usec.Get("user1112")
+	if ok {
+		println(s2.(string))
 	}
 }
