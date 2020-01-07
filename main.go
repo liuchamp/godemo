@@ -1,23 +1,43 @@
 package main
 
 import (
-	"fmt"
-	"github.com/go-redis/redis"
+	"encoding/base64"
+	"encoding/json"
+	"log"
 )
 
+type PayInfoModel struct {
+	CardHolderName string `json:"cardHolderName" bson:"cardHolderName"`
+	AlipayName     string `json:"alipayName" bson:"alipayName"`
+	CardNo         string `json:"cardNo" bson:"cardNo"`
+	CardType       string `json:"cardType" bson:"cardType"`
+	AlipayAccount  string `json:"alipayAccount" bson:"alipayAccount"`
+}
+
 func main() {
-	redisdb := redis.NewClusterClient(&redis.ClusterOptions{
-		Addrs: []string{
-			"192.168.0.193:7001",
-			"192.168.0.193:7002",
-			"192.168.0.193:7003",
-			"192.168.0.193:7004",
-			"192.168.0.193:7005",
-			"192.168.0.193:7006"},
+	bs, err := json.Marshal(PayInfoModel{
+		CardHolderName: "start_user",
+		AlipayName:     "start_user",
+		CardNo:         "6241941651496819856",
+		CardType:       "中国银行",
+		AlipayAccount:  "ali1561651564156",
 	})
-	redisdb.Ping()
-	err := redisdb.ReloadState()
 	if err != nil {
-		fmt.Println(err)
+		log.Fatal(err)
 	}
+	log.Println(string(bs))
+
+	encodeString := base64.StdEncoding.EncodeToString(bs)
+	log.Println(encodeString)
+
+	// 如果要用在url中，需要使用URLEncoding
+	uEnc := base64.URLEncoding.EncodeToString([]byte(bs))
+	log.Println(uEnc)
+
+	uDec, err := base64.URLEncoding.DecodeString(uEnc)
+	if err != nil {
+		log.Fatalln(err)
+	}
+	log.Println(string(uDec))
+
 }
