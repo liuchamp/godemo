@@ -78,10 +78,10 @@ func main() {
 	if err != nil {
 		fmt.Println("write error")
 	}
-	png, err := qrcode.Encode(authLink, qrcode.Medium, 256)
-
-	if err != nil {
-		fmt.Println("write error")
-	}
-	fmt.Println(string(png))
+	//png, err := qrcode.Encode(authLink, qrcode.Medium, 256)
+	//
+	//if err != nil {
+	//	fmt.Println("write error")
+	//}
+	//fmt.Println(string(png))
 }
