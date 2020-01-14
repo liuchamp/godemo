@@ -72,7 +72,7 @@ func main() {
 	fmt.Printf("%06d (%d second(s) remaining)\n", pwd, secondsRemaining)
 
 	// 生成二维码供 Authenticatior (身份验证器) 扫描
-	authLink := "otpauth://totp/dmks?secret=" + secretKey + "&issuer=liuchamp"
+	authLink := "otpauth://totp/qapi?secret=" + secretKey + "&issuer=" + "wjxs"
 	fmt.Println(authLink)
 
 	err = qrcode.WriteFile(authLink, qrcode.Medium, 256, "qr.png")
