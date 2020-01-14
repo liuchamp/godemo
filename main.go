@@ -55,11 +55,12 @@ func oneTimePassword(key []byte, value []byte) uint32 {
 }
 
 func main() {
-	secretKey := "qwertyuiopasdfghqwertyuiopasdfgh" // 16*N 个字符
+	secretKey := "qwerasdfzcvjkmlo" // 16*N 个字符
 	secretKeyUpper := strings.ToUpper(secretKey)
 	key, err := base32.StdEncoding.DecodeString(secretKeyUpper)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err.Error())
+		fmt.Printf("key len %d", len(secretKey))
 		os.Exit(1)
 	}
 
@@ -71,7 +72,7 @@ func main() {
 	fmt.Printf("%06d (%d second(s) remaining)\n", pwd, secondsRemaining)
 
 	// 生成二维码供 Authenticatior (身份验证器) 扫描
-	authLink := "otpauth://totp/www.baidu.com?secret=" + secretKey + "&issuer=用户名"
+	authLink := "otpauth://totp/dmks?secret=" + secretKey + "&issuer=liuchamp"
 	fmt.Println(authLink)
 
 	err = qrcode.WriteFile(authLink, qrcode.Medium, 256, "qr.png")
