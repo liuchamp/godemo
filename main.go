@@ -4,6 +4,7 @@ import (
 	"crypto/hmac"
 	"crypto/sha1"
 	"encoding/base32"
+	"encoding/base64"
 	"fmt"
 	"github.com/skip2/go-qrcode"
 	"os"
@@ -79,10 +80,10 @@ func main() {
 	if err != nil {
 		fmt.Println("write error")
 	}
-	//png, err := qrcode.Encode(authLink, qrcode.Medium, 256)
-	//
-	//if err != nil {
-	//	fmt.Println("write error")
-	//}
-	//fmt.Println(string(png))
+	png, err := qrcode.Encode(authLink, qrcode.Medium, 256)
+
+	if err != nil {
+		fmt.Println("write error")
+	}
+	fmt.Println(base64.StdEncoding.EncodeToString(png))
 }
