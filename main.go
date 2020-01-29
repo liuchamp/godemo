@@ -25,8 +25,20 @@ func main() {
 	}
 
 	bot.Debug = true
-
 	log.Printf("Authorized on account %s", bot.Self.UserName)
+	chat, err := bot.GetChat(tgbotapi.ChatConfig{
+		ChatID:             -375956450,
+		SuperGroupUsername: "yexijgyun",
+	})
+	if err != nil {
+		log.Println(err)
+	}
+	log.Println("is channel --->", chat.IsChannel())
+	log.Println("is group --->", chat.IsGroup())
+	log.Println("is private --->", chat.IsPrivate())
+	log.Println("is supper group --->", chat.IsSuperGroup())
+	log.Println("is --->", chat.Type, chat.UserName, chat.Title)
+
 	rmsg := tgbotapi.NewMessage(-375956450, "bot is ok")
 	if _, err := bot.Send(rmsg); err != nil {
 		log.Panic(err)
@@ -62,7 +74,7 @@ func main() {
 			msg.Text = update.Message.Text
 		case "close":
 			msg.Text = update.Message.Text
-			msg.ReplyMarkup = tgbotapi.NewRemoveKeyboard(true)
+			msg.ReplyMarkup = tgbotapi.NewRemoveKeyboard(false)
 		default:
 			msg.Text = "I don't know that command"
 		}
