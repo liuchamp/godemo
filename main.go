@@ -33,14 +33,12 @@ func main() {
 		}
 		cpup, err := ps.CPUPercent()
 		mif, err := ps.MemoryInfo()
-		pofs, err := ps.OpenFiles()
-		for _, pof := range pofs {
-			fmt.Println(pof.Path, "----->", pof.Fd)
-		}
+		pofs, err := ps.NumFDs()
+
 		c.JSON(200, gin.H{
 			"cpus":     cpup,
 			"men":      mif.VMS,
-			"fileinfo": len(pofs),
+			"fileinfo": pofs,
 		})
 	})
 	r.Run(":18880")
