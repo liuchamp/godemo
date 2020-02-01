@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"github.com/go-telegram-bot-api/telegram-bot-api"
 	"log"
 )
@@ -64,7 +65,10 @@ func main() {
 		// Extract the command from the Message.
 		switch update.Message.Command() {
 		case "help":
-			msg.Text = "type /sayhi or /status."
+			msg.Text = "<pre>|  命令   |    说明      |      示例        | \n"
+			msg.Text += fmt.Sprintf("|%-8s|%-12s|%-16s|\n", "/stauts", "获取服务状态，默认是全部服务", "/status webserver")
+			msg.Text += fmt.Sprintf("|%-8s|%-12s|%-16s|\n", "/log", "获取 log 服务器的状态", "/log")
+			msg.Text += "</pre>"
 		case "sayhi":
 			msg.Text = "Hi :)"
 		case "status":
@@ -78,7 +82,7 @@ func main() {
 		default:
 			msg.Text = "I don't know that command"
 		}
-
+		msg.ParseMode = tgbotapi.ModeHTML
 		if _, err := bot.Send(msg); err != nil {
 			log.Panic(err)
 		}
