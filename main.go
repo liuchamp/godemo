@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"github.com/360EntSecGroup-Skylar/excelize"
 	"github.com/gin-gonic/gin"
 )
@@ -27,4 +28,10 @@ func main() {
 	}
 	bf.Bytes()
 
+}
+
+func FileDownload(c *gin.Context) {
+	c.Writer.Header().Add("Content-Disposition", fmt.Sprintf("attachment; filename=%s", "sdfasdadsa.xslx")) //fmt.Sprintf("attachment; filename=%s", filename)对下载的文件重命名
+	c.Writer.Header().Add("Content-Type", "application/octet-stream")
+	c.File("file")
 }
