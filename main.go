@@ -1,23 +1,39 @@
 package main
 
-import (
-	"fmt"
-	"github.com/go-redis/redis"
-)
+import "fmt"
+
+type Message string
+
+func NewEvent(g Greeter) Event {
+	return Event{Greeter: g}
+}
+
+type Event struct {
+	Greeter Greeter // <- adding a Greeter field
+}
+
+func (e Event) Start() {
+	msg := e.Greeter.Greet()
+	fmt.Println(msg)
+}
+func NewMessage() Message {
+	return Message("Hi there!")
+}
+
+func NewGreeter(m Message) Greeter {
+	return Greeter{Message: m}
+}
+
+func (g Greeter) Greet() Message {
+	return g.Message
+}
+
+type Greeter struct {
+	Message Message // <- adding a Message field
+}
 
 func main() {
-	redisdb := redis.NewClusterClient(&redis.ClusterOptions{
-		Addrs: []string{
-			"192.168.0.193:7001",
-			"192.168.0.193:7002",
-			"192.168.0.193:7003",
-			"192.168.0.193:7004",
-			"192.168.0.193:7005",
-			"192.168.0.193:7006"},
-	})
-	redisdb.Ping()
-	err := redisdb.ReloadState()
-	if err != nil {
-		fmt.Println(err)
-	}
+	e := InitializeEvent()
+
+	e.Start()
 }
