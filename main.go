@@ -10,7 +10,7 @@ import (
 
 func main() {
 	// DES 加解密
-	testDes()
+	//testDes()
 	// 3DES加解密
 	test3Des()
 }
