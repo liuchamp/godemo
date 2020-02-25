@@ -1,23 +1,22 @@
+/*
+Copyright © 2020 NAME HERE <EMAIL ADDRESS>
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
 package main
 
-import (
-	"fmt"
-	"github.com/go-redis/redis"
-)
+import "github.com/liuchamp/godemo/cmd"
 
 func main() {
-	redisdb := redis.NewClusterClient(&redis.ClusterOptions{
-		Addrs: []string{
-			"192.168.0.193:7001",
-			"192.168.0.193:7002",
-			"192.168.0.193:7003",
-			"192.168.0.193:7004",
-			"192.168.0.193:7005",
-			"192.168.0.193:7006"},
-	})
-	redisdb.Ping()
-	err := redisdb.ReloadState()
-	if err != nil {
-		fmt.Println(err)
-	}
+	cmd.Execute()
 }

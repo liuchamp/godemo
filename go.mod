@@ -2,4 +2,8 @@ module github.com/liuchamp/godemo
 
 go 1.13
 
-require github.com/go-redis/redis v6.15.7+incompatible
+require (
+	github.com/mitchellh/go-homedir v1.1.0
+	github.com/spf13/cobra v0.0.6
+	github.com/spf13/viper v1.6.2
+)
