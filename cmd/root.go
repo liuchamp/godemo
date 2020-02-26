@@ -38,6 +38,9 @@ var rootCmd = &cobra.Command{
 当仅仅有rootcmd时，执行是否会影响子命令执行`,
 	// Uncomment the following line if your bare application
 	// has an action associated with it:
+	PersistentPreRun: func(cmd *cobra.Command, args []string) {
+		fmt.Println("root PersistentPreRun")
+	},
 	Run: func(cmd *cobra.Command, args []string) {
 
 		if len(name) == 0 {
@@ -65,7 +68,7 @@ func init() {
 	// will be global for your application.
 
 	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.godemo.yaml)")
-	rootCmd.Flags().StringVarP(&name, "name", "n", "", "person's name ")
+	rootCmd.PersistentFlags().StringVarP(&name, "name", "n", "", "person's name ")
 	rootCmd.Flags().IntVarP(&age, "age", "a", 0, "person's age")
 	// Cobra also supports local flags, which will only run
 	// when this action is called directly.
