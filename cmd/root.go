@@ -17,6 +17,7 @@ package cmd
 
 import (
 	"fmt"
+	"github.com/liuchamp/godemo/imp"
 	"github.com/spf13/cobra"
 	"os"
 
@@ -25,20 +26,26 @@ import (
 )
 
 var cfgFile string
+var name string
+var age int
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
 	Use:   "godemo",
-	Short: "A brief description of your application",
-	Long: `A longer description that spans multiple lines and likely contains
-examples and usage of using your application. For example:
+	Short: "简单测试",
+	Long: `测试cobra多root默认执行和子命令执行
 
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+当仅仅有rootcmd时，执行是否会影响子命令执行`,
 	// Uncomment the following line if your bare application
 	// has an action associated with it:
-	//	Run: func(cmd *cobra.Command, args []string) { },
+	Run: func(cmd *cobra.Command, args []string) {
+
+		if len(name) == 0 {
+			cmd.Help()
+			return
+		}
+		imp.Show(name, age)
+	},
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
@@ -58,7 +65,8 @@ func init() {
 	// will be global for your application.
 
 	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.godemo.yaml)")
-
+	rootCmd.Flags().StringVarP(&name, "name", "n", "", "person's name ")
+	rootCmd.Flags().IntVarP(&age, "age", "a", 0, "person's age")
 	// Cobra also supports local flags, which will only run
 	// when this action is called directly.
 	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
