@@ -7,7 +7,6 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"time"
-	"windplatform/webbackend/webserver/util"
 )
 
 type DemoDec struct {
@@ -18,7 +17,7 @@ type DemoDec struct {
 const timeform = "2006-01-02 15:04:05"
 
 func main() {
-	client, err := mongo.NewClient(options.Client().ApplyURI("mongodb://192.168.0.193:27017"))
+	client, err := mongo.NewClient(options.Client().ApplyURI("mongodb://test:123456@127.0.0.1:27017/test"))
 	if err != nil {
 		panic(err)
 	}
@@ -51,7 +50,7 @@ func main() {
 		if err := cor.Decode(sm); err != nil {
 			panic(err)
 		}
-		fmt.Println(util.TimeFormat(sm.CreateTime), "------>", util.TimeFormat(sm.UpdateTime))
+		fmt.Println(sm.CreateTime, "------>", sm.UpdateTime)
 	}
 
 }
