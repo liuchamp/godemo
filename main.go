@@ -12,6 +12,7 @@ import (
 type DemoDec struct {
 	UpdateTime time.Time
 	CreateTime time.Time
+	PlayerID   string
 }
 
 const timeform = "2006-01-02 15:04:05"
@@ -27,6 +28,7 @@ func main() {
 	ddc := DemoDec{}
 	ddc.CreateTime = time.Now()
 	ddc.UpdateTime = time.Now()
+	ddc.PlayerID = "dsafdsafdassdfa"
 
 	_, err = col.InsertOne(ctx, ddc)
 	if err != nil {
