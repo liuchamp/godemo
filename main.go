@@ -23,7 +23,7 @@ type TestDemo struct {
 }
 
 func main() {
-	client, err := mongo.NewClient(options.Client().ApplyURI("mongodb://192.168.0.196:27017"))
+	client, err := mongo.NewClient(options.Client().ApplyURI("mongodb://suroot:suroot123456@192.168.0.195:27017,192.168.0.195:27018,192.168.0.195:27019/?replicaSet=rep_Wind"))
 	if err != nil {
 		panic(err)
 	}
@@ -31,7 +31,27 @@ func main() {
 
 	client.Database("test").Collection("sdmo").DeleteMany(context.TODO(), bson.M{})
 	//sduls()
-	testdata(client)
+	multiUpdateOneDoc(client)
+}
+
+func multiUpdateOneDoc(client *mongo.Client) {
+	//准备数据
+	client.Database("test").Collection("sdmo").UpdateOne(context.Background(), bson.M{"name": "test"}, bson.M{"$set": bson.M{"sdk": 1}}, options.Update().SetUpsert(true))
+	ere := client.UseSession(context.Background(), func(sctx mongo.SessionContext) error {
+
+		if _, err := client.Database("test").Collection("sdmo").UpdateOne(sctx, bson.M{"name": "test"}, bson.M{"$inc": bson.M{"sdk": 2}, "$set": bson.M{"sdm": 9}}); err != nil {
+			return err
+		}
+		if _, err := client.Database("test").Collection("sdmo").UpdateOne(sctx, bson.M{"name": "siandisaf"}, bson.M{"$inc": bson.M{"sdk": 8}, "$set": bson.M{"sdm": 3}}); err != nil {
+			return err
+		}
+
+		_, err := client.Database("test").Collection("sdmo").UpdateOne(sctx, bson.M{"name": "test"}, bson.M{"$set": bson.M{"sdk": 3, "sdm": 6}})
+		return err
+	})
+	if ere != nil {
+		panic(ere)
+	}
 }
 
 func sduls() {
