@@ -82,11 +82,13 @@ func (p *Pool) Run() {
 
 //主函数
 func main() {
+	i := 0
 	//创建一个Task
 	t := NewTask(func() error {
-		fmt.Println(time.Now())
+		fmt.Println(i, time.Now().Unix())
 
 		time.Sleep(3 * time.Second)
+		i++
 		return nil
 	})
 
@@ -97,6 +99,8 @@ func main() {
 	go func() {
 		for {
 			p.EntryChannel <- t
+
+			fmt.Println("start new task")
 		}
 	}()
 
