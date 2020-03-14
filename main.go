@@ -41,9 +41,9 @@ type Pool struct {
 //创建一个协程池
 func NewPool(cap int) *Pool {
 	p := Pool{
-		EntryChannel: make(chan *Task),
+		EntryChannel: make(chan *Task, 10*cap),
 		worker_num:   cap,
-		JobsChannel:  make(chan *Task),
+		JobsChannel:  make(chan *Task, 10*cap),
 	}
 
 	return &p
