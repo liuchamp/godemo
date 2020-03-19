@@ -3,44 +3,19 @@ package main
 import (
 	"fmt"
 	"github.com/mozillazg/go-pinyin"
+	"unicode"
 )
 
 func main() {
-	hans := "中国人"
+	//通过复杂的方式解析字符串的首字母问
+	fmdk := "似当年发动大"
+	smdk := []rune(fmdk)
+	fmt.Println(unicode.IsLetter(smdk[0]))
+	fmt.Println(unicode.Is(unicode.Han, smdk[0]))
 
-	// 默认
-	a := pinyin.NewArgs()
-	fmt.Println(pinyin.Pinyin(hans, a))
-	// [[zhong] [guo] [ren]]
-
-	// 包含声调
-	a.Style = pinyin.Tone
-	fmt.Println(pinyin.Pinyin(hans, a))
-	// [[zhōng] [guó] [rén]]
-
-	// 声调用数字表示
-	a.Style = pinyin.Tone2
-	fmt.Println(pinyin.Pinyin(hans, a))
-	// [[zho1ng] [guo2] [re2n]]
-
-	// 开启多音字模式
-	a = pinyin.NewArgs()
-	a.Heteronym = true
-	fmt.Println(pinyin.Pinyin(hans, a))
-	// [[zhong zhong] [guo] [ren]]
-	a.Style = pinyin.Tone2
-	fmt.Println(pinyin.Pinyin(hans, a))
-	// [[zho1ng zho4ng] [guo2] [re2n]]
-
-	fmt.Println(pinyin.LazyPinyin(hans, pinyin.NewArgs()))
-	// [zhong guo ren]
-
-	fmt.Println(pinyin.Convert(hans, nil))
-	// [[zhong] [guo] [ren]]
-
-	fmt.Println(pinyin.LazyConvert(hans, nil))
-	// [zhong guo ren]
-
-	// 段落转换，支持完整支持多音字，保留符号
-	fmt.Println(pinyin.Paragraph("交给团长，告诉他我们给予期望。前线的供给一定要能自给自足！"))
+	if unicode.Is(unicode.Han, smdk[0]) {
+		f := string(smdk[0])
+		fs := pinyin.LazyConvert(f, nil)
+		fmt.Println(fs)
+	}
 }
