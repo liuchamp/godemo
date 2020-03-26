@@ -2,7 +2,7 @@ package pikm
 
 //db_start 刚开始
 //发现多个注解
-type AgentGameItem struct {
+type AgentGameItem struct { //ssssss
 	RoundNum     uint32  `json:"roundNum" bson:"roundNum"`         //局数
 	WinScore     int64   `json:"winScore" bson:"winScore"`         //游戏消耗分数(输赢情况)
 	Tax          int64   `json:"tax" bson:"tax"`                   //税收
