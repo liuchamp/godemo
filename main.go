@@ -2,22 +2,34 @@ package main
 
 import (
 	"fmt"
-	"github.com/go-redis/redis"
+	"go/ast"
+	"go/parser"
+	"go/token"
+	"io/ioutil"
 )
 
 func main() {
-	redisdb := redis.NewClusterClient(&redis.ClusterOptions{
-		Addrs: []string{
-			"192.168.0.193:7001",
-			"192.168.0.193:7002",
-			"192.168.0.193:7003",
-			"192.168.0.193:7004",
-			"192.168.0.193:7005",
-			"192.168.0.193:7006"},
-	})
-	redisdb.Ping()
-	err := redisdb.ReloadState()
+	src, err := ioutil.ReadFile("pikm/test.go")
 	if err != nil {
-		fmt.Println(err)
+		panic(err)
 	}
+
+	fset := token.NewFileSet()
+	file, err := parser.ParseFile(fset, "", src, parser.ParseComments)
+	if err != nil {
+		panic(err)
+	}
+
+	ast.Inspect(file, func(x ast.Node) bool {
+		s, ok := x.(*ast.StructType)
+		if !ok {
+			return true
+		}
+
+		for _, field := range s.Fields.List {
+			fmt.Printf("Field: %s\n", field.Names[0].Name)
+			fmt.Printf("Tag:   %s\n", field.Tag.Value)
+		}
+		return false
+	})
 }
