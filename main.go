@@ -2,22 +2,37 @@ package main
 
 import (
 	"fmt"
-	"github.com/go-redis/redis"
+	"sync"
 )
 
-func main() {
-	redisdb := redis.NewClusterClient(&redis.ClusterOptions{
-		Addrs: []string{
-			"192.168.0.193:7001",
-			"192.168.0.193:7002",
-			"192.168.0.193:7003",
-			"192.168.0.193:7004",
-			"192.168.0.193:7005",
-			"192.168.0.193:7006"},
+//Singleton 是单例模式类
+type Singleton struct {
+	c int
+}
+
+var singleton *Singleton
+var once sync.Once
+
+//GetInstance 用于获取单例模式对象
+func GetInstance() *Singleton {
+	once.Do(func() {
+		singleton = &Singleton{}
 	})
-	redisdb.Ping()
-	err := redisdb.ReloadState()
-	if err != nil {
-		fmt.Println(err)
-	}
+
+	return singleton
+}
+
+func (st *Singleton) GetS() string {
+	st.c = st.c + 1
+	return fmt.Sprintf("sxx %d", st.c)
+}
+
+func main() {
+	s1 := GetInstance()
+	fmt.Println(s1.GetS())
+	s2 := GetInstance()
+	
+	fmt.Println(s2.GetS())
+	fmt.Println(s1.GetS())
+	fmt.Println(s2.GetS())
 }
