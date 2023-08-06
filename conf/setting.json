@@ -1,0 +1,14 @@
+{
+  "channelReg": [
+    {
+      "id": 1,
+      "channel": "fasdfa",
+      "enable": true
+    },
+    {
+      "id": 2,
+      "channel": "dfadsfa",
+      "enable": true
+    }
+  ]
+}
