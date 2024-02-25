@@ -5,8 +5,9 @@ import (
 	"go/ast"
 	"go/parser"
 	"go/token"
-	"golang.org/x/tools/go/ast/astutil"
 	"os"
+
+	"golang.org/x/tools/go/ast/astutil"
 )
 
 func main() {
